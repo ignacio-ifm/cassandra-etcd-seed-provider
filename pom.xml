@@ -6,7 +6,8 @@
 
     <groupId>org.zalando</groupId>
     <artifactId>cassandra-etcd-seed-provider</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
+    <url>https://github.com/zalando/cassandra-etcd-seed-provider</url>
 
     <dependencies>
         <dependency>
@@ -29,8 +30,21 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    
     <scm>
-        <developerConnection>scm:svn:https://svn.mycompany.com/repos/myapplication/trunk/mycomponent/</developerConnection>
+        <developerConnection>scm:git:git@github.com:zalando/cassandra-etcd-seed-provider.git</developerConnection>
     </scm>
 
 </project>
