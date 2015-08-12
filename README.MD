@@ -46,7 +46,11 @@ the ``url`` setting.
     
 ## Howto
 
-You have to change the seed provider ``class_name`` configuration and set the 
+First you have to copy the latest jar file for this library to your cassandra/lib sub-folder to
+make sure the ``EtcdSeedProvider`` is available. You can build it yourself or check the Download
+section below.
+
+You then have to change the seed provider ``class_name`` configuration and set the 
 ``url`` parameter in your **cassandra.yaml** configuration file.
 
 For example:
