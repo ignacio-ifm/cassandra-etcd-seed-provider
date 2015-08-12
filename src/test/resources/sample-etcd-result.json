@@ -1,0 +1,17 @@
+{
+  "action": "get",
+  "node": {
+    "key": "/cassandra/cluster1/seeds",
+    "dir": true,
+    "nodes": [
+      {
+        "key": "/cassandra/cluster1/seeds/5",
+        "value": "127.0.0.1",
+        "modifiedIndex": 5,
+        "createdIndex": 5
+      }
+    ],
+    "modifiedIndex": 5,
+    "createdIndex": 5
+  }
+}
