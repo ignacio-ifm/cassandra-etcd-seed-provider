@@ -12,6 +12,7 @@ import org.apache.cassandra.locator.SeedProvider;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.zalando.cassandra.locator.SeedDescriptor;
 import org.zalando.cassandra.locator.etcd.KeyNode;
 import org.zalando.cassandra.locator.etcd.ResultNode;
 
@@ -26,13 +27,28 @@ import java.util.concurrent.TimeUnit;
 public class EtcdSeedProvider implements SeedProvider {
     private static final Logger logger = LoggerFactory.getLogger(EtcdSeedProvider.class);
 
-    private static final Function<KeyNode, InetAddress> KEYNODE_TO_INETADDRESS = new Function<KeyNode, InetAddress>() {
-        public InetAddress apply(final KeyNode keyNode) {
-            final String hostname = keyNode.getValue();
+    private final String hostnameFromDescriptor(final String value) {
+        if (value.startsWith("{")) {
             try {
-                return InetAddress.getByName(hostname);
-            } catch (UnknownHostException e) {
-                logger.error("Invalid hostname {}", hostname);
+                return mapper.readValue(value, SeedDescriptor.class).getHost();
+            } catch (java.io.IOException e) {
+                logger.error("Failed to parse seed descriptor", e);
+                return null;
+            }
+        } else {
+            return value;
+        }
+    }
+
+    private final Function<KeyNode, InetAddress> KEYNODE_TO_INETADDRESS = new Function<KeyNode, InetAddress>() {
+        public InetAddress apply(final KeyNode keyNode) {
+            final String hostname = hostnameFromDescriptor(keyNode.getValue());
+            if (hostname != null) {
+                try {
+                    return InetAddress.getByName(hostname);
+                } catch (UnknownHostException e) {
+                    logger.error("Invalid hostname {}", hostname);
+                }
             }
             return null;
         }
