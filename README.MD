@@ -64,7 +64,4 @@ For example:
 
 You can download the latest released version from bintray [ ![Download](https://api.bintray.com/packages/lmineiro/maven/cassandra-etcd-seed-provider/images/download.svg) ](https://bintray.com/lmineiro/maven/cassandra-etcd-seed-provider/_latestVersion)
 
-## Known limitations and To Do list
-
-- Only the IP addresses are stored, without any further metadata like AZ
 
