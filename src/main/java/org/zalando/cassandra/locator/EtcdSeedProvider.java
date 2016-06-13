@@ -10,6 +10,7 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import org.apache.cassandra.locator.SeedProvider;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zalando.cassandra.locator.SeedDescriptor;
@@ -75,6 +76,8 @@ public class EtcdSeedProvider implements SeedProvider {
     private final URL etcdUrl;
 
     public EtcdSeedProvider(final Map<String, String> args) {
+        configureMapper();
+
         final Optional<String> url = Optional.fromNullable(args.get("url"));
         try {
             if (url.isPresent()) {
@@ -90,6 +93,7 @@ public class EtcdSeedProvider implements SeedProvider {
     }
 
     public EtcdSeedProvider(final URL etcdUrl) {
+        configureMapper();
         this.etcdUrl = etcdUrl;
     }
 
@@ -106,5 +110,9 @@ public class EtcdSeedProvider implements SeedProvider {
                 .transform(KEYNODE_TO_INETADDRESS)
                 .filter(Predicates.notNull())
                 .toList();
+    }
+
+    private void configureMapper() {
+        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 }
